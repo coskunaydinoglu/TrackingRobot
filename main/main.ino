@@ -55,10 +55,11 @@ int Fast = 255; // fast speed (of 255 max)
 const int trigPin = 2;
 const int echoPin = 3;
 int currentSpeed = 125;
-long distance = 255;  
+long distance = 255;
+#include <math.h>
 void setup() //---6 Pins being used are outputs--- 
 {
-
+  Serial.begin(9600); 
   pinMode(leftmotorForward, OUTPUT);
   pinMode(leftmotorBackward, OUTPUT);
   pinMode(leftmotorspeed, OUTPUT);
@@ -84,12 +85,20 @@ void loop()
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
   distance = (duration/2) / 29.1;
+  Serial.print("Distance: ")
   Serial.print(distance);
-    Serial.println(" cm");
-  if(distance > 255)
+  Serial.print(" cm ");
+  
+  currentSpeed = 10*atan(distance);
+  Serial.print(" Speed: ");
+  Serial.println(currentSpeed);
+  
+  /*if(distance > 255)
     currentSpeed = 255;
   else
-    currentSpeed = (int) distance;  
+    currentSpeed = (int) distance; */
+  
+  
   if (distance < 4) {  // This is where the LED On/Off happens
 
         Stop();
@@ -110,14 +119,7 @@ void loop()
         
         delay(Think);
 
-  }
-
-  else if(distance < 8 )
-  {
-    goSlower();  
-  }
-
-  
+  } 
   else
   {
 
