@@ -23,7 +23,7 @@ Pin 12 from Uno controls the state of shield output 3
 Pin 13 from Uno controls the state of shiled output 4
 
 */
-
+#include <math.h>
 //--- Declared variables
 
 int leftmotorForward = 8; // pin 8 --- left motor (+) green wire
@@ -55,7 +55,7 @@ int Fast = 255; // fast speed (of 255 max)
 const int trigPin = 2;
 const int echoPin = 3;
 int currentSpeed = 125;
-long distance = 255;  
+double distance = 255;  
 void setup() //---6 Pins being used are outputs--- 
 {
 
@@ -76,6 +76,7 @@ void loop()
 
 {
 
+  Serial.begin(57600);
   long duration;
   digitalWrite(trigPin, LOW);  // Added this line
   delayMicroseconds(2); // Added this line
@@ -84,13 +85,18 @@ void loop()
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
   distance = (duration/2) / 29.1;
-  Serial.print(distance);
+  Serial.print(distance,2);
     Serial.println(" cm");
-  if(distance > 255)
+  //Serial.println("Goodnight moon!");    
+  /*if(distance > 255)
     currentSpeed = 255;
   else
-    currentSpeed = (int) distance;  
-  if (distance < 4) {  // This is where the LED On/Off happens
+    currentSpeed = atan(distance);
+*/
+  //Serial.println(String(currentSpeed));
+  
+    //currentSpeed = (int) distance;  
+/*  if (distance < 4) {  // This is where the LED On/Off happens
 
         Stop();
 
@@ -126,7 +132,7 @@ void loop()
    //delay(TurningTime);
   
   }
-
+*/
 }
 
 //----- "Sub-rutine" Voids called by the main loop
