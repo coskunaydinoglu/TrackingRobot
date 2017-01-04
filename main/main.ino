@@ -58,7 +58,7 @@ int currentSpeed = 125;
 double distance = 255;  
 void setup() //---6 Pins being used are outputs--- 
 {
-
+  Serial.begin(9600);
   pinMode(leftmotorForward, OUTPUT);
   pinMode(leftmotorBackward, OUTPUT);
   pinMode(leftmotorspeed, OUTPUT);
@@ -76,7 +76,7 @@ void loop()
 
 {
 
-  Serial.begin(57600);
+  
   long duration;
   digitalWrite(trigPin, LOW);  // Added this line
   delayMicroseconds(2); // Added this line
@@ -86,8 +86,25 @@ void loop()
   duration = pulseIn(echoPin, HIGH);
   distance = (duration/2) / 29.1;
   Serial.print(distance,2);
-    Serial.println(" cm");
-  //Serial.println("Goodnight moon!");    
+  Serial.print(" cm");
+
+  currentSpeed = 50 * atan(distance);
+  if(distance <= 4 )
+  {
+    Stop();
+    goBackward();
+    delay(TurningTime);
+    Stop();
+    turnLeft();
+
+        delay(TurningTime);
+        
+        Stop();
+  }
+  Serial.print(" Current Speed:" );
+  Serial.println(currentSpeed);
+
+  goForward( );
   /*if(distance > 255)
     currentSpeed = 255;
   else
